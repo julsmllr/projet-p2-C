@@ -7,7 +7,7 @@
 //Essayer de changer pour un tableau de t_list pas de t_list*
 
 typedef struct {
-    t_list** tab;
+    t_list **tab;
     int taille;
 }liste_adjacence;
 
