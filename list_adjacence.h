@@ -8,5 +8,4 @@ typedef struct {
 }liste_adjacence;
 
 
-
 #endif //INC_2526_TI301_PJT_LIST_ADJACENCE_H
