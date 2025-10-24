@@ -13,3 +13,11 @@ liste_adjacence createEmptyTab(int taille) {
     return adj;
 }
 
+void printTab(liste_adjacence tab) {
+    if (tab.tab != NULL) {
+        for (int i = 0; i < tab.taille; i++) {
+            printf("Liste pour le sommet %d : ", i+1);
+            printList(tab.tab[i]);
+        }
+    }
+}
