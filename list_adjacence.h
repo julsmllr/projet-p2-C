@@ -5,7 +5,7 @@
 #include "list_adjacence.h"
 
 typedef struct {
-    t_list** tab;
+    t_list **tab;
     int taille;
 }liste_adjacence;
 
