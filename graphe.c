@@ -20,8 +20,16 @@ liste_adjacence readGraph(const char *filename) {
     }
     adj = createEmptyTab(nbvert);
     while(fscanf(file,"%d %d %f",&depart,&arrivee,&proba) ==3) {
-        t_cell *arete = createNewCell(int depart, float proba);
-        arete -> next
+        t_cell *arete = malloc(sizeof(t_cell));
+        if (arete == NULL) {
+            perror("Memory allocation failed");
+            exit(EXIT_FAILURE);
+        }
+
+        arete->pointArrive = arrivee;
+        arete->proba = proba;
+        arete->next = adj.tab[depart];
+        adj.tab[depart] = arete;
     }
 }
 
