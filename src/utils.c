@@ -7,7 +7,8 @@
 char *getID(int i)
 {
     // translate from 1,2,3, .. ,500+ to A,B,C,..,Z,AA,AB,...
-    static char buffer[10];
+
+    char* buffer = (char*) malloc(sizeof(char)*10); //le static char* fait que toutes les variables sont modifiées
     char temp[10];
     int index = 0;
 

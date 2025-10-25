@@ -3,7 +3,7 @@
 //
 
 #include "../include/graphe.h"
-#include "../list_adjacence.h"
+#include "../include/list_adjacence.h"
 #include "../include/utils.h"
 
 
@@ -22,19 +22,15 @@ liste_adjacence readGraph(const char *filename) {
         perror("Could not find number of vertices");
         exit(EXIT_FAILURE);
     }
-    adj = createEmptyTab(nbvert);
-    while(fscanf(file,"%d %d %f",&depart,&arrivee,&proba) ==3) {
-        t_cell *arete = malloc(sizeof(t_cell));
-        if (arete == NULL) {
-            perror("Memory allocation failed");
-            exit(EXIT_FAILURE);
-        }
 
-        arete->pointArrive = arrivee;
-        arete->proba = proba;
-        arete->next = adj.tab[depart];
-        adj.tab[depart] = arete;
+    adj = createEmptyTab(nbvert);
+
+    while(fscanf(file,"%d %d %f",&depart,&arrivee,&proba) == 3) {
+        addCellToList(adj.tab[depart-1], arrivee, proba);
     }
+    adj.markovStatus = 1;
+
+    return adj;
 }
 
 float getProbaList(t_list* list) {
@@ -56,15 +52,18 @@ void checkGraph(liste_adjacence graphe) {
         float sum = getProbaList(graphe.tab[i]);
         if (!(sum >= 0.99 && sum <= 1)) {
             printf("Le graphe n'est pas une chaine de Markov\n");
-            printf("La somme des probabilités du sommet %d est %f", i+1, sum);
+            printf("La somme des probabilités du sommet %d est %f\n", i+1, sum);
+            graphe.markovStatus = 0;
             i = graphe.taille;
         }
     }
-    printf("Le graphe est une chaine de Markov");
+    if (graphe.markovStatus == 1) {
+        printf("Le graphe est une chaine de Markov\n");
+    }
 }
 
 
-void drawGraphe(liste_adjacence graphe) {
+void drawGraphe(liste_adjacence graphe){
     FILE *file = fopen("../mermaid_file.txt", "w");
 
     //Add Header
@@ -84,7 +83,6 @@ void drawGraphe(liste_adjacence graphe) {
         t_cell* currCell = currList->head;
         while (currCell != NULL) {
             char *pointArrive = getID(currCell->pointArrive);
-            printf("%s %s %d %d", pointDepart, pointArrive, i+1, currCell->pointArrive);
             fprintf(file, "%s -->|%.2f|%s\n", pointDepart , currCell->proba, pointArrive);
             currCell = currCell->next;
         }

@@ -9,6 +9,7 @@
 typedef struct {
     t_list **tab;
     int taille;
+    int markovStatus;
 }liste_adjacence;
 
 liste_adjacence createEmptyTab(int size);
