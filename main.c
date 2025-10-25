@@ -1,9 +1,9 @@
 #include <stdio.h>
 
 #include <unistd.h>
-#include "list.h"
+#include "include/list.h"
 #include "list_adjacence.h"
-#include "graphe.h"
+#include "include/graphe.h"
 
 int main() {
 

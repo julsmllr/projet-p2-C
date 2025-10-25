@@ -5,14 +5,9 @@ set(CMAKE_C_STANDARD 11)
 
 add_executable(TI_301_PJT
         main.c
-        utils.c
-        utils.h
-        cell.c
-        cell.h
-        list.c
-        list.h
-        list_adjacence.c
-        list_adjacence.h
-        graphe.h
-        graphe.c)
+        src/utils.c
+        src/cell.c
+        src/list.c
+        src/list_adjacence.c
+        src/graphe.c)
 

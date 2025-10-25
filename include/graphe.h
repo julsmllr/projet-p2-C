@@ -1,7 +1,7 @@
 #ifndef GRAPHE_H
 #define GRAPHE_H
 
-#include "list_adjacence.h"
+#include "../list_adjacence.h"
 #include "list.h"
 
 

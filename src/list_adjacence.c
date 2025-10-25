@@ -1,4 +1,4 @@
-#include "list_adjacence.h"
+#include "../list_adjacence.h"
 
 liste_adjacence createEmptyTab(int taille) {
     liste_adjacence adj;

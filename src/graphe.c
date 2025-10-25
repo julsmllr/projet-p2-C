@@ -2,13 +2,13 @@
 // Created by lauri on 24/10/2025.
 //
 
-#include "graphe.h"
-#include "list_adjacence.h"
-#include "utils.h"
+#include "../include/graphe.h"
+#include "../list_adjacence.h"
+#include "../include/utils.h"
 
 
 
-/*
+
 liste_adjacence readGraph(const char *filename) {
     FILE *file = fopen(filename,"rt");
     int nbvert, depart, arrivee;
@@ -35,7 +35,7 @@ liste_adjacence readGraph(const char *filename) {
         arete->next = adj.tab[depart];
         adj.tab[depart] = arete;
     }
-}*/
+}
 
 float getProbaList(t_list* list) {
    float sum = 0;
@@ -64,36 +64,33 @@ void checkGraph(liste_adjacence graphe) {
 }
 
 
-void drawConnection(liste_adjacence graphe, int i, char *pointDepart) {
-    FILE* file = fopen("../mermaid_file.txt", "a");
-    t_list* currList = graphe.tab[i];
-    t_cell* currCell = currList->head;
-    while (currCell != NULL) {
-        char *pointArrive = getID(currCell->pointArrive);
-        fprintf(file, "%s -->|%.2f|%s\n", pointDepart , currCell->proba, pointArrive);
-        currCell = currCell->next;
-    }
-    fclose(file);
-}
-
 void drawGraphe(liste_adjacence graphe) {
     FILE *file = fopen("../mermaid_file.txt", "w");
 
     //Add Header
-    fprintf(file, "---\nconfig:\n\tlayout: elk\n\ttheme: neo\n\tlook: neo\n---\n\nflowchart LR\n");
+    fprintf(file, "---\nconfig:\nlayout: elk\ntheme: neo\nlook: neo\n---\n\nflowchart LR\n");
 
     for (int i = 1; i <= graphe.taille; i++) {
         fprintf(file, "%s((%d))\n", getID(i), i);
     }
 
     fprintf(file, "\n");
-    fclose(file);
+
     for (int i = 0; i < graphe.taille; i++) {
 
         char *pointDepart = getID(i+1);
-        drawConnection(graphe, i, pointDepart);
+
+        t_list* currList = graphe.tab[i];
+        t_cell* currCell = currList->head;
+        while (currCell != NULL) {
+            char *pointArrive = getID(currCell->pointArrive);
+            printf("%s %s %d %d", pointDepart, pointArrive, i+1, currCell->pointArrive);
+            fprintf(file, "%s -->|%.2f|%s\n", pointDepart , currCell->proba, pointArrive);
+            currCell = currCell->next;
+        }
     }
 
+        fclose(file);
 
 }
 

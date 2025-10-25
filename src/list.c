@@ -2,7 +2,7 @@
 // Created by jules on 24/10/2025.
 //
 
-#include "list.h"
+#include "../include/list.h"
 
 t_list* createEmptyList() {
     t_list* newList = (t_list*) malloc(sizeof(t_list));
