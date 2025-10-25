@@ -9,5 +9,7 @@ add_executable(TI_301_PJT
         src/cell.c
         src/list.c
         src/list_adjacence.c
-        src/graphe.c)
+        src/graphe.c
+        src/tarjan_vertex.c
+        include/tarjan_vertex.h)
 

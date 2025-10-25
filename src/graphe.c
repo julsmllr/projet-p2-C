@@ -88,7 +88,7 @@ void drawGraphe(liste_adjacence graphe){
         }
     }
 
-        fclose(file);
-
+    fclose(file);
+    printf("Fichier Mermaid créé avec succès");
 }
 

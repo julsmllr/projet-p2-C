@@ -7,7 +7,7 @@
 
 int main() {
 
-    liste_adjacence graphe = readGraph("../data/exemple1_from_chatGPT.txt");
+    liste_adjacence graphe = readGraph("../data/exemple_valid_step3.txt");
     checkGraph(graphe);
     printTab(graphe);
     if (graphe.markovStatus == 1) {
