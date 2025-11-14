@@ -28,7 +28,14 @@ typedef struct {
     t_tab_tarjan_vertex tab;
 }t_tarjan_class;
 
+typedef struct s_tarjan_class_cell {
+    t_tarjan_class* classe;
+    struct s_tarjan_class_cell* next;
+}t_tarjan_class_cell;
 
-typedef t_tarjan_class* t_tab_tarjan_class;
+typedef struct {
+    t_tarjan_class_cell head;
+}t_tarjan_class_list; //stocker des classes dans une liste chainée
+
 
 #endif //INC_2526_TI301_PJT_TARJAN_VERTEXT_H
