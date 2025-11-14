@@ -3,17 +3,31 @@
 
 typedef struct {
     int id; //n° du sommet
-    int tempNum;
-    int accessibleNumber;
-    int inStack;
+    int tempNum; //N° random
+    int accessibleNumber; //N° des noeuds qui communiquent avec
+    int inStack; //N° dans la pile ou non
 }t_tarjan_vertex;
 
 typedef t_tarjan_vertex* t_tab_tarjan_vertex;
+
+
+typedef struct s_vertex_cell{
+    t_tarjan_vertex* noeud;
+    struct s_vertex_cell* next;
+}t_vertex_cell;
+
+
+typedef struct {
+    t_vertex_cell head;
+}t_vertex_list; //stocker des vertex dans une liste chainée
+
+
 
 typedef struct {
     char* className;
     t_tab_tarjan_vertex tab;
 }t_tarjan_class;
+
 
 typedef t_tarjan_class* t_tab_tarjan_class;
 
