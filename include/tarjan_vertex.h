@@ -1,6 +1,9 @@
 #ifndef INC_2526_TI301_PJT_TARJAN_VERTEXT_H
 #define INC_2526_TI301_PJT_TARJAN_VERTEXT_H
 
+
+#include "../include/list_adjacence.h"
+
 typedef struct {
     int id; //n° du sommet
     int tempNum; //N° random
@@ -36,6 +39,11 @@ typedef struct s_tarjan_class_cell {
 typedef struct {
     t_tarjan_class_cell head;
 }t_tarjan_class_list; //stocker des classes dans une liste chainée
+
+
+//-------------------------------------------//
+
+t_tab_tarjan_vertex initTarjanVertexTab(liste_adjacence graphe);
 
 
 #endif //INC_2526_TI301_PJT_TARJAN_VERTEXT_H
