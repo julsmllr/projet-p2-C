@@ -4,11 +4,13 @@
 #include <stdio.h>
 #include "cell.h"
 
+
+
 typedef struct s_stack {
     t_cell *head;
 } t_stack;
 
-void push(t_stack *stack, t_cell noeud);
+void push(t_stack *stack, t_cell *noeud);
 
 t_cell* top(t_stack *stack);
 

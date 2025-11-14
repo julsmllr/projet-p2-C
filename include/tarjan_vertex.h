@@ -10,7 +10,7 @@ typedef struct {
 
 typedef t_tarjan_vertex* t_tab_tarjan_vertex;
 
-
+/*
 typedef struct s_vertex_cell{
     t_tarjan_vertex* noeud;
     struct s_vertex_cell* next;
@@ -20,7 +20,7 @@ typedef struct s_vertex_cell{
 typedef struct {
     t_vertex_cell head;
 }t_vertex_list; //stocker des vertex dans une liste chainée
-
+*/
 
 
 typedef struct {
