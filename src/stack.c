@@ -1,4 +1,4 @@
-#include "stack.h"
+#include "../include/stack.h"
 
 
 void push(t_stack *stack, t_cell *noeud) {
@@ -16,8 +16,6 @@ t_cell* top(t_stack *stack) {
 
 t_cell* pop(t_stack *stack) {
     t_cell* topNoeud = top(stack);
-    t_cell *cell = stack->head;
-    stack->head = cell->next;
-    free(cell);
+    stack->head = topNoeud->next;
     return topNoeud;
 }

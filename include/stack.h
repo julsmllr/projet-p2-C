@@ -1,7 +1,7 @@
 #ifndef INC_2526_TI301_PJT_STACK_H
 #define INC_2526_TI301_PJT_STACK_H
 
-
+#include <stdio.h>
 #include "cell.h"
 
 typedef struct s_stack {
