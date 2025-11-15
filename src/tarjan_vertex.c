@@ -180,7 +180,16 @@ void printPartition(t_tarjan_class_list partition) {
 
 t_tab_node_to_class* linkNodeToClass(t_tarjan_class_list partition, liste_adjacence graphe) {
     int taille = graphe.taille;
-    t_tab_node_to_class* newTabNodeToClass = (t_tab_node_to_class*) malloc(sizeof(t_tarjan_class**)*taille);
+    // Allouer un pointeur de t_tarjan_class** (qui sera t_tarjan_class***)
+    t_tab_node_to_class* newTabNodeToClass = (t_tab_node_to_class*) malloc(sizeof(t_tarjan_class*));
+    // Allouer le tableau de t_tarjan_class*
+    *newTabNodeToClass = (t_tarjan_class*) malloc(sizeof(t_tarjan_class*)*taille);
+    
+    // Initialiser à NULL
+    for (int i = 0; i < taille; i++) {
+        (*newTabNodeToClass)[i] = NULL;
+    }
+    
     if (partition.head != NULL) {
         t_tarjan_class_cell* curr = partition.head;
         while (curr != NULL) {
@@ -188,7 +197,7 @@ t_tab_node_to_class* linkNodeToClass(t_tarjan_class_list partition, liste_adjace
             t_vertex_cell* vertexInClass = classe->list->head;
             while (vertexInClass != NULL) {
                 int nodeId = vertexInClass->noeud->id;
-                *newTabNodeToClass[nodeId-1] = classe;
+                (*newTabNodeToClass)[nodeId-1] = classe;
                 vertexInClass = vertexInClass->next;
             }
             curr = curr->next;
@@ -228,12 +237,13 @@ t_link* createNewLink(t_tarjan_class* classCI,t_tarjan_class* classCJ) {
 t_cell_link* newLinkCell(t_link* link) {
     t_cell_link* newCell = (t_cell_link*) malloc(sizeof(t_cell_link));
     newCell->link = link;
+    newCell->next = NULL;
     return newCell;
 }
 
 void insertNewLink(t_list_link* listLink, t_link* newLink) {
     t_cell_link* newCell = newLinkCell(newLink);
-    if (listLink->head != NULL){
+    if (listLink->head == NULL){
         listLink->head = newCell;
     }else {
         t_cell_link* curr = listLink->head;
@@ -253,12 +263,14 @@ t_list_link* linkRecence(liste_adjacence graphe, t_tab_node_to_class tabNodeToCl
         t_cell* curr = graphe.tab[i]->head;
         while (curr != NULL) {
             t_tarjan_class* classCJ = tabNodeToClass[curr->pointArrive - 1];
-            if (!isLink(*newlistLink, classCI, classCJ)) {
+            if (classCI != classCJ && !isLink(*newlistLink, classCI, classCJ)) {
                 t_link* newLink = createNewLink(classCI, classCJ);
                 insertNewLink(newlistLink, newLink);
             }
+            curr = curr->next;
         }
     }
+    return newlistLink;
 };
 
 
