@@ -1,8 +1,6 @@
 #ifndef INC_2526_TI301_PJT_TARJAN_VERTEXT_H
 #define INC_2526_TI301_PJT_TARJAN_VERTEXT_H
 
-#include "../include/stack.h"
-#include "../include/list_adjacence.h"
 
 typedef struct {
     int id; //n° du sommet
@@ -11,7 +9,12 @@ typedef struct {
     int inStack; //N° dans la pile ou non
 }t_tarjan_vertex;
 
-typedef t_tarjan_vertex* t_tab_tarjan_vertex;
+
+typedef t_tarjan_vertex** t_tab_tarjan_vertex;
+
+#include "stack.h"
+#include "list_adjacence.h"
+
 
 
 typedef struct s_vertex_cell{
@@ -27,8 +30,8 @@ typedef struct {
 
 
 typedef struct {
-    char* className;
-    t_vertex_list  tab;
+    int className;
+    t_vertex_list* list;
 }t_tarjan_class;
 
 typedef struct s_tarjan_class_cell {
@@ -44,6 +47,7 @@ typedef struct {
 //-------------------------------------------//
 
 t_tab_tarjan_vertex initTarjanVertexTab(liste_adjacence graphe);
+t_tarjan_class_list* tarjanFunction(liste_adjacence graphe);
 
-
+void printPartition(t_tarjan_class_list partition);
 #endif //INC_2526_TI301_PJT_TARJAN_VERTEXT_H
