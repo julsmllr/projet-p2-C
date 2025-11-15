@@ -43,6 +43,28 @@ typedef struct {
     t_tarjan_class_cell* head;
 }t_tarjan_class_list; //stocker des classes dans une liste chainée
 
+//--------------------- LIENS ENTRE CLASSE ----------------------//
+
+typedef struct {
+    t_tarjan_class* classeDepart;
+    t_tarjan_class* classeArrivee;
+}t_link;
+
+
+typedef struct s_cell_link {
+    t_link* link;
+    struct s_cell_link* next;
+}t_cell_link;
+
+
+typedef struct {
+    t_cell_link* head;
+}t_list_link;
+
+
+
+typedef t_tarjan_class** t_tab_node_to_class;
+
 
 //-------------------------------------------//
 
@@ -50,4 +72,9 @@ t_tab_tarjan_vertex initTarjanVertexTab(liste_adjacence graphe);
 t_tarjan_class_list* tarjanFunction(liste_adjacence graphe);
 
 void printPartition(t_tarjan_class_list partition);
+
+
+t_tab_node_to_class* linkNodeToClass(t_tarjan_class_list partition, liste_adjacence graphe);
+t_list_link* linkRecence(liste_adjacence graphe, t_tab_node_to_class tabNodeToClass);
+void printLinks(t_list_link linkSummary);
 #endif //INC_2526_TI301_PJT_TARJAN_VERTEXT_H

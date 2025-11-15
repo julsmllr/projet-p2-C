@@ -22,5 +22,10 @@ int main() {
 
     printf("\n\nAffichage Partition\n");
     printPartition(*tarjanClassList);
+
+    printf("\n");
+    t_tab_node_to_class* tabLinkNodeToClass = linkNodeToClass(*tarjanClassList, graphe);
+    t_list_link* linkSummary = linkRecence(graphe, *tabLinkNodeToClass);
+    printLinks(*linkSummary);
     return 0;
 }

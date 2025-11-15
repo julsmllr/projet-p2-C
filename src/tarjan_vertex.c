@@ -172,3 +172,102 @@ void printPartition(t_tarjan_class_list partition) {
         }
     }
 }
+
+
+
+// ------------------- LIENS ENTRE CLASSE ------------------- //
+
+
+t_tab_node_to_class* linkNodeToClass(t_tarjan_class_list partition, liste_adjacence graphe) {
+    int taille = graphe.taille;
+    t_tab_node_to_class* newTabNodeToClass = (t_tab_node_to_class*) malloc(sizeof(t_tarjan_class**)*taille);
+    if (partition.head != NULL) {
+        t_tarjan_class_cell* curr = partition.head;
+        while (curr != NULL) {
+            t_tarjan_class* classe = curr->classe;
+            t_vertex_cell* vertexInClass = classe->list->head;
+            while (vertexInClass != NULL) {
+                int nodeId = vertexInClass->noeud->id;
+                *newTabNodeToClass[nodeId-1] = classe;
+                vertexInClass = vertexInClass->next;
+            }
+            curr = curr->next;
+        }
+    }
+    return newTabNodeToClass;
+}
+
+t_list_link* createNewListLink() {
+    t_list_link* newlistLink = (t_list_link*) malloc(sizeof(t_list_link));
+    newlistLink->head = NULL;
+    return newlistLink;
+}
+
+
+int isLink(t_list_link listLink, t_tarjan_class* depart, t_tarjan_class* arrivee) {
+    if (listLink.head != NULL){
+        t_cell_link* curr = listLink.head;
+        while (curr != NULL) {
+            if (curr->link->classeDepart == depart && curr->link->classeArrivee == arrivee) {
+                return 1;
+            }
+            curr = curr->next;
+        }
+    }
+    return 0;
+}
+
+
+t_link* createNewLink(t_tarjan_class* classCI,t_tarjan_class* classCJ) {
+    t_link* newLink = (t_link*) malloc(sizeof(t_link));
+    newLink->classeDepart = classCI;
+    newLink->classeArrivee = classCJ;
+    return newLink;
+}
+
+t_cell_link* newLinkCell(t_link* link) {
+    t_cell_link* newCell = (t_cell_link*) malloc(sizeof(t_cell_link));
+    newCell->link = link;
+    return newCell;
+}
+
+void insertNewLink(t_list_link* listLink, t_link* newLink) {
+    t_cell_link* newCell = newLinkCell(newLink);
+    if (listLink->head != NULL){
+        listLink->head = newCell;
+    }else {
+        t_cell_link* curr = listLink->head;
+        while (curr->next != NULL) {
+            curr = curr->next;
+        }
+
+        curr->next = newCell;
+    }
+}
+
+t_list_link* linkRecence(liste_adjacence graphe, t_tab_node_to_class tabNodeToClass) {
+    t_list_link* newlistLink = createNewListLink();
+    for (int i = 0; i < graphe.taille; i++) {
+        t_tarjan_class* classCI = tabNodeToClass[i];
+
+        t_cell* curr = graphe.tab[i]->head;
+        while (curr != NULL) {
+            t_tarjan_class* classCJ = tabNodeToClass[curr->pointArrive - 1];
+            if (!isLink(*newlistLink, classCI, classCJ)) {
+                t_link* newLink = createNewLink(classCI, classCJ);
+                insertNewLink(newlistLink, newLink);
+            }
+        }
+    }
+};
+
+
+void printLinks(t_list_link linkSummary) {
+    if (linkSummary.head != NULL) {
+        t_cell_link* curr = linkSummary.head;
+        while (curr != NULL) {
+            printf("C%d -> C%d \n", curr->link->classeDepart->className, curr->link->classeArrivee->className);
+            curr = curr->next;
+        }
+    }
+}
