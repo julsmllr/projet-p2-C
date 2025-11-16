@@ -313,6 +313,7 @@ void caracGraphe(t_list_link linkSummary, t_tarjan_class_list classList) {
             t_tarjan_class* classe = currentClass->classe;
             t_vertex_cell* currCellClass = classe->list->head;
 
+            //Classe transitoire
             if (isClassInSummary(linkSummary, classe)) {
                 printf("La classe C%d est transitoire", classe->className);
                 printf("- l'état ");
@@ -323,6 +324,7 @@ void caracGraphe(t_list_link linkSummary, t_tarjan_class_list classList) {
                 }
                 printf("sont transitoires");
             }else {
+            //Classe persistante
                 printf("La classe C%d est persistante", classe->className);
                 printf("- l'état ");
                 while (currCellClass != NULL) {
@@ -332,6 +334,7 @@ void caracGraphe(t_list_link linkSummary, t_tarjan_class_list classList) {
                 }
                 printf("sont persistants");
             }
+            //Classe Absorbante
             if (tailleClasse == 1) {
                 printf(" - l'état %d est absorbant;\n", classe->list->head->noeud->id);
             }else {
@@ -344,9 +347,5 @@ void caracGraphe(t_list_link linkSummary, t_tarjan_class_list classList) {
         if (nbClasse == 1) {
             printf("Le graphe de Markov est irréductible\n");
         }
-        //regarder si j'ai qu'une seule classe dans le graphe
-
-        //Regarder si j'ai des liens d'une classes sortantes sinon persistant
-        //Regarder si j'ai des classes avec un seul noeud
     }
 }
