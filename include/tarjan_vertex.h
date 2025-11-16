@@ -77,4 +77,7 @@ void printPartition(t_tarjan_class_list partition);
 t_tab_node_to_class* linkNodeToClass(t_tarjan_class_list partition, liste_adjacence graphe);
 t_list_link* linkRecence(liste_adjacence graphe, t_tab_node_to_class tabNodeToClass);
 void printLinks(t_list_link linkSummary);
+
+
+void caracGraphe(t_list_link linkSummary, t_tarjan_class_list classList);
 #endif //INC_2526_TI301_PJT_TARJAN_VERTEXT_H

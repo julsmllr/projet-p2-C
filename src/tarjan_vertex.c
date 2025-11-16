@@ -49,6 +49,7 @@ t_tarjan_class* createNewClass(int name) {
     return newClass;
 }
 
+// ---------------------------- Création avec malloc (listes chaînées) ---------------------------- //
 
 void parcours(int sommetId, t_tab_tarjan_vertex tabTarjanVertex, int* num, t_stack* stack, liste_adjacence graphe, t_tarjan_class_list* tarjanClassList) {
     t_tarjan_vertex* tarjanVertex = tabTarjanVertex[sommetId]; //Avoir le noeud en Tarjan
@@ -180,10 +181,10 @@ void printPartition(t_tarjan_class_list partition) {
 
 t_tab_node_to_class* linkNodeToClass(t_tarjan_class_list partition, liste_adjacence graphe) {
     int taille = graphe.taille;
-    // Allouer un pointeur de t_tarjan_class** (qui sera t_tarjan_class***)
-    t_tab_node_to_class* newTabNodeToClass = (t_tab_node_to_class*) malloc(sizeof(t_tarjan_class*));
+    // Allouer un pointeur de t_tarjan_class** (qui sera t_tarjan_class***) - Sinon j'avais une erreur
+    t_tab_node_to_class* newTabNodeToClass = (t_tab_node_to_class*) malloc(sizeof(t_tarjan_class**));
     // Allouer le tableau de t_tarjan_class*
-    *newTabNodeToClass = (t_tarjan_class*) malloc(sizeof(t_tarjan_class*)*taille);
+    *newTabNodeToClass = (t_tab_node_to_class) malloc(sizeof(t_tarjan_class*)*taille);
     
     // Initialiser à NULL
     for (int i = 0; i < taille; i++) {
@@ -281,5 +282,71 @@ void printLinks(t_list_link linkSummary) {
             printf("C%d -> C%d \n", curr->link->classeDepart->className, curr->link->classeArrivee->className);
             curr = curr->next;
         }
+    }
+}
+
+
+// --------------------- DERNIERE PARTIE --------------------- //
+
+int isClassInSummary(t_list_link linkSummary, t_tarjan_class* classe) {
+    if (linkSummary.head != NULL) {
+        t_cell_link* curr = linkSummary.head;
+        while (curr != NULL) {
+            if (curr->link->classeDepart == classe) {
+                return 1;
+            }
+            curr = curr->next;
+        }
+    }return 0;
+}
+
+void caracGraphe(t_list_link linkSummary, t_tarjan_class_list classList) {
+
+    printf("\n\n # -------------------------- Caractéristique du graphe -------------------------- # \n\n");
+
+    int tailleClasse, nbClasse;
+    nbClasse = 0;
+    if (classList.head != NULL) {
+        t_tarjan_class_cell* currentClass = classList.head;
+        while (currentClass != NULL) {
+            tailleClasse = 0; //On met le nombre de noeuds dans chaque classe à 0
+            t_tarjan_class* classe = currentClass->classe;
+            t_vertex_cell* currCellClass = classe->list->head;
+
+            if (isClassInSummary(linkSummary, classe)) {
+                printf("La classe C%d est transitoire", classe->className);
+                printf("- l'état ");
+                while (currCellClass != NULL) {
+                    tailleClasse++;
+                    printf("%d ", currCellClass->noeud->id);
+                    currCellClass = currCellClass->next;
+                }
+                printf("sont transitoires");
+            }else {
+                printf("La classe C%d est persistante", classe->className);
+                printf("- l'état ");
+                while (currCellClass != NULL) {
+                    tailleClasse++;
+                    printf("%d ", currCellClass->noeud->id);
+                    currCellClass = currCellClass->next;
+                }
+                printf("sont persistants");
+            }
+            if (tailleClasse == 1) {
+                printf(" - l'état %d est absorbant;\n", classe->list->head->noeud->id);
+            }else {
+                printf(";\n");
+            }
+
+            nbClasse++;
+            currentClass = currentClass->next;
+        }
+        if (nbClasse == 1) {
+            printf("Le graphe de Markov est irréductible\n");
+        }
+        //regarder si j'ai qu'une seule classe dans le graphe
+
+        //Regarder si j'ai des liens d'une classes sortantes sinon persistant
+        //Regarder si j'ai des classes avec un seul noeud
     }
 }
