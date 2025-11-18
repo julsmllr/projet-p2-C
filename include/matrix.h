@@ -25,7 +25,8 @@ void multiplyMatrices(const t_matrix *A, const t_matrix *B, t_matrix *result);
 float diffMatrix(const t_matrix *A, const t_matrix *B);
 
 
-
+t_matrix subMatrix(const t_matrix matrix, t_tarjan_class_list partition, int compo_index);
+int gcd_int_array(const int *vals, int nbvals);
 #endif // MATRIX_H
 
 

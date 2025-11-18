@@ -101,4 +101,65 @@ float diffMatrix(const t_matrix *A, const t_matrix *B) {
     return (float) sum;
 }
 
+t_matrix subMatrix(const t_matrix *matrix, t_tarjan_class_list partition, int compo_index) {
+    int idx = 1;
+    t_tarjan_class_cell *cur = partition.head;
+    while (cur && idx < compo_index) { cur = cur->next; idx++; }
+    if (!cur) {
+        fprintf(stderr, "subMatrix: composante %d non trouvÃ©e\n", compo_index);
+        exit(EXIT_FAILURE);
+    }
+    t_tarjan_class *classe = cur->classe;
+
+    int size = 0;
+    t_vertex_cell *vcur = classe->list->head;
+    while (vcur) { size++; vcur = vcur->next; }
+
+    if (size == 0) {
+        t_matrix empty = createEmptyMatrix(0);
+        return empty;
+    }
+
+    int *nodes = (int *) malloc(size * sizeof(int));
+    int p = 0;
+    vcur = classe->list->head;
+    while (vcur) {
+        nodes[p++] = vcur->noeud->id;
+        vcur = vcur->next;
+    }
+
+    t_matrix sub = createEmptyMatrix(size);
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
+            int row = nodes[i] - 1;
+            int col = nodes[j] - 1;
+            if (row >= 0 && row < matrix->size && col >= 0 && col < matrix->size) {
+                sub.mat[i][j] = matrix->mat[row][col];
+            } else {
+                sub.mat[i][j] = 0.0f;
+            }
+        }
+    }
+
+    free(nodes);
+    return sub;
+}
+
+int gcd_int_array(const int *vals, int nbvals) {
+    if (nbvals == 0) return 0;
+    int result = vals[0];
+    for (int k = 1; k < nbvals; ++k) {
+        int a = result;
+        int b = vals[k];
+        if (a < 0) a = -a;
+        if (b < 0) b = -b;
+        while (b != 0) {
+            int temp = b;
+            b = a % b;
+            a = temp;
+        }
+        result = a;
+    }
+    return result;
+}
 
