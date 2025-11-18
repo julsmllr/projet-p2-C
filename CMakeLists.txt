@@ -11,5 +11,7 @@ add_executable(TI_301_PJT
         src/list_adjacence.c
         src/graphe.c
         src/tarjan_vertex.c
-        src/stack.c)
+        src/stack.c
+        include/matrix.h
+        src/matrix.c)
 
