@@ -1,6 +1,4 @@
-#include <stdlib.h>
 #include <windows.h>
-
 #include "include/list_adjacence.h"
 #include "include/graphe.h"
 #include "include/tarjan_vertex.h"
@@ -9,8 +7,7 @@
 void graphInformation(liste_adjacence graphe) {
     int userInput = 0;
     while (userInput != 3) {
-        system("cls");
-        printf("\n# ------------------ INFORMATIONS GRAPHE ------------------ #\n\n");
+        printf("# ------------------ INFORMATIONS GRAPHE ------------------ #\n\n");
         printf("1. Afficher la liste d'adjacence\n");
         printf("2. Créer le fichier Mermaid\n");
         printf("3. Revenir au menu principal\n");
@@ -40,7 +37,6 @@ void graphInformation(liste_adjacence graphe) {
 void partitionAndClass(t_tarjan_class_list* tabClass, t_list_link* tabLink) {
     int userInput = 0;
     while (userInput != 5) {
-        system("cls");
         printf("# ------------------ PARITIONS ET CLASSES ------------------ #\n\n");
         printf("1. Afficher les classes\n");
         printf("2. Afficher les relations entre les classes\n");
@@ -76,7 +72,6 @@ void partitionAndClass(t_tarjan_class_list* tabClass, t_list_link* tabLink) {
 void matrixandProba(t_matrix* matrice, t_tarjan_class_list* tarjanClassList) {
     int userInput = 0;
     while (userInput != 5) {
-        system("cls");
         printf("# ------------------ MATRICES ET PROBABILITES ------------------ #\n\n");
         printf("1. Afficher la matrice de probabilité\n");
         printf("2. Afficher la matrice au rang n\n");
