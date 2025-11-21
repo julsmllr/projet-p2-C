@@ -9,16 +9,16 @@
 #include <math.h>
 
 
-t_matrix createEmptyMatrix(int n) {
-    t_matrix m;
-    m.size = n;
-    m.mat = (float **) malloc(n * sizeof(float*));
-    if (m.mat == NULL) {
+t_matrix* createEmptyMatrix(int n) {
+    t_matrix *m = (t_matrix*) malloc(sizeof(t_matrix));
+    m->size = n;
+    m->mat = (float **) malloc(n * sizeof(float*));
+    if (m->mat == NULL) {
         perror("malloc"); exit(EXIT_FAILURE);
     }
     for (int i = 0; i < n; ++i) {
-        m.mat[i] = (float *) calloc(n, sizeof(float));
-        if (m.mat[i] == NULL) {
+        m->mat[i] = (float *) calloc(n, sizeof(float));
+        if (m->mat[i] == NULL) {
             perror("calloc"); exit(EXIT_FAILURE);
         }
     }
@@ -38,15 +38,15 @@ void freeMatrix(t_matrix *m) {
 }
 
 
-t_matrix createMatrixFromAdjList(liste_adjacence graphe) {
+t_matrix* createMatrixFromAdjList(liste_adjacence graphe) {
     int n = graphe.taille;
-    t_matrix M = createEmptyMatrix(n);
+    t_matrix* M = createEmptyMatrix(n);
     for (int i = 0; i < n; ++i) {
         t_list *lst = graphe.tab[i];
         t_cell *curr = lst->head;
         while (curr != NULL) {
             int j = curr->pointArrive - 1;
-            M.mat[i][j] = curr->proba;
+            M->mat[i][j] = curr->proba;
             curr = curr->next;
         }
     }
@@ -58,7 +58,7 @@ void copyMatrix(const t_matrix *src, t_matrix *dst) {
     if (!dst) return;
     if (dst->mat == NULL || dst->size != src->size) {
         if (dst->mat != NULL) freeMatrix(dst);
-        *dst = createEmptyMatrix(src->size);
+        dst = createEmptyMatrix(src->size);
     }
     int n = src->size;
     for (int i = 0; i < n; ++i) {
@@ -67,21 +67,34 @@ void copyMatrix(const t_matrix *src, t_matrix *dst) {
 }
 
 
-void multiplyMatrices(t_matrix *A, t_matrix *B, t_matrix *result) {
+t_matrix* multiplyMatrices(t_matrix *A, t_matrix *B) {
     if (B->size == A->size) {
         int n = A->size;
-        t_matrix temp = createEmptyMatrix(n);
+        t_matrix* temp = createEmptyMatrix(n);
 
         for (int i = 0; i < n; ++i) {
             for (int k = 0; k < n; ++k) {
                 float a = A->mat[i][k];
                 for (int j = 0; j < n; ++j) {
-                    temp.mat[i][j] += a * B->mat[k][j];
+                    temp->mat[i][j] += a * B->mat[k][j];
                 }
             }
         }
-        copyMatrix(&temp, result);
-        freeMatrix(&temp);
+        return temp;
+
+    }
+}
+
+t_matrix* multiplyMatricesBy(t_matrix *matrice, int times) {
+    if (times > 1) {
+        t_matrix* firstResult = multiplyMatrices(matrice, matrice);
+        t_matrix* finalResult;
+        for (int i = 0; i < times-1; i++) {
+            t_matrix* result = multiplyMatrices(firstResult, matrice);
+            copyMatrix(result, firstResult);
+            finalResult = result;
+        }
+        return finalResult;
     }
 
 }
@@ -97,7 +110,7 @@ void printMatric(t_matrix matrice) {
     }
 }
 
-float diffMatrix(const t_matrix *A, const t_matrix *B) {
+float diffMatrix(t_matrix *A, t_matrix *B) {
     if (!A || !B || A->size != B->size) {
         fprintf(stderr, "diffMatrix: tailles incompatibles\n");
         exit(EXIT_FAILURE);
@@ -109,7 +122,7 @@ float diffMatrix(const t_matrix *A, const t_matrix *B) {
             sum += fabs((double)A->mat[i][j] - (double)B->mat[i][j]);
     return (float) sum;
 }
-
+/*
 t_matrix subMatrix(t_matrix *matrix, t_tarjan_class_list partition, int compo_index) {
     int idx = 1;
     t_tarjan_class_cell *cur = partition.head;
@@ -153,7 +166,7 @@ t_matrix subMatrix(t_matrix *matrix, t_tarjan_class_list partition, int compo_in
     free(nodes);
     return sub;
 }
-
+/*
 int gcd_int_array(const int *vals, int nbvals) {
     if (nbvals == 0) return 0;
     int result = vals[0];
@@ -175,7 +188,7 @@ int gcd_int_array(const int *vals, int nbvals) {
 int getPeriod(const t_matrix sub_matrix) {
     int n = sub_matrix.size;
     if (n == 0) return 0;
-    int periods = (int ) malloc(n*sizeof(int));
+    int *periods = (int *) malloc(n*sizeof(int));
     int period_count = 0;
     int cpt = 1;
 
@@ -204,3 +217,4 @@ int getPeriod(const t_matrix sub_matrix) {
     freeMatrix(&result_matrix);
     return result;
 }
+*/
