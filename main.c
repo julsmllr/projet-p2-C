@@ -18,7 +18,7 @@ int main() {
     }
 
 
-    //Parition Partition
+    //Partition
     t_tarjan_class_list* tarjanClassList =  tarjanFunction(graphe);
 
     printf("\n\nAffichage Partition\n");

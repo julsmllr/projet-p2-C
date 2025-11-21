@@ -172,3 +172,35 @@ int gcd_int_array(const int *vals, int nbvals) {
     return result;
 }
 
+int getPeriod(const t_matrix sub_matrix) {
+    int n = sub_matrix.size;
+    if (n == 0) return 0;
+    int periods = (int ) malloc(n*sizeof(int));
+    int period_count = 0;
+    int cpt = 1;
+
+    t_matrix power_matrix = createEmptyMatrix(n);
+    t_matrix result_matrix = createEmptyMatrix(n);
+    copyMatrix(&sub_matrix, &power_matrix);
+
+    for (cpt = 1; cpt <= n; ++cpt) {
+        int diag_nonzero = 0;
+        for (int i = 0; i < n; ++i) {
+            if (power_matrix.mat[i][i] > 0.0f) {
+                diag_nonzero = 1;
+                break;
+            }
+        }
+        if (diag_nonzero) {
+            periods[period_count++] = cpt;
+        }
+        multiplyMatrices(&power_matrix, &sub_matrix, &result_matrix);
+        copyMatrix(&result_matrix, &power_matrix);
+    }
+
+    int result = gcd_int_array(periods, period_count);
+    free(periods);
+    freeMatrix(&power_matrix);
+    freeMatrix(&result_matrix);
+    return result;
+}
