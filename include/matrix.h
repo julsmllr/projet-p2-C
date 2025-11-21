@@ -15,17 +15,20 @@ typedef struct {
     float **mat;
 } t_matrix;
 
+
 t_matrix createEmptyMatrix(int n);
 void freeMatrix(t_matrix *m);
 
 t_matrix createMatrixFromAdjList(liste_adjacence graphe);
+void printMatric(t_matrix matrice);
+
 
 void copyMatrix(const t_matrix *src, t_matrix *dst);
-void multiplyMatrices(const t_matrix *A, const t_matrix *B, t_matrix *result);
+void multiplyMatrices(t_matrix *A, t_matrix *B, t_matrix *result);
 float diffMatrix(const t_matrix *A, const t_matrix *B);
 
 
-t_matrix subMatrix(const t_matrix matrix, t_tarjan_class_list partition, int compo_index);
+t_matrix subMatrix(t_matrix *matrix, t_tarjan_class_list partition, int compo_index);
 int gcd_int_array(const int *vals, int nbvals);
 #endif // MATRIX_H
 

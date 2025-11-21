@@ -4,13 +4,13 @@
 #include "include/list_adjacence.h"
 #include "include/graphe.h"
 #include "include/tarjan_vertex.h"
-
+#include "include/matrix.h"
 
 int main() {
 
     SetConsoleOutputCP(CP_UTF8);
 
-    liste_adjacence graphe = readGraph("../data/exemple_valid_step3.txt");
+    liste_adjacence graphe = readGraph("../data/exemple_meteo.txt");
     checkGraph(graphe);
     printTab(graphe);
     if (graphe.markovStatus == 1) {
@@ -30,5 +30,8 @@ int main() {
     printLinks(*linkSummary);
 
     caracGraphe(*linkSummary,*tarjanClassList);
+
+    t_matrix matrice = createMatrixFromAdjList(graphe);
+    printMatric(matrice);
     return 0;
 }

@@ -13,23 +13,28 @@ t_matrix createEmptyMatrix(int n) {
     t_matrix m;
     m.size = n;
     m.mat = (float **) malloc(n * sizeof(float*));
-    if (!m.mat) { perror("malloc"); exit(EXIT_FAILURE); }
+    if (m.mat == NULL) {
+        perror("malloc"); exit(EXIT_FAILURE);
+    }
     for (int i = 0; i < n; ++i) {
         m.mat[i] = (float *) calloc(n, sizeof(float));
-        if (!m.mat[i]) { perror("calloc"); exit(EXIT_FAILURE); }
+        if (m.mat[i] == NULL) {
+            perror("calloc"); exit(EXIT_FAILURE);
+        }
     }
     return m;
 }
 
 void freeMatrix(t_matrix *m) {
-    if (!m || m->mat == NULL) return;
-    for (int i = 0; i < m->size; ++i) {
-        free(m->mat[i]);
-        m->mat[i] = NULL;
+    if (m != NULL && m->mat != NULL) {
+        for (int i = 0; i < m->size; ++i) {
+            free(m->mat[i]);
+            m->mat[i] = NULL;
+        }
+        free(m->mat);
+        m->mat = NULL;
+        m->size = 0;
     }
-    free(m->mat);
-    m->mat = NULL;
-    m->size = 0;
 }
 
 
@@ -38,14 +43,11 @@ t_matrix createMatrixFromAdjList(liste_adjacence graphe) {
     t_matrix M = createEmptyMatrix(n);
     for (int i = 0; i < n; ++i) {
         t_list *lst = graphe.tab[i];
-        if (!lst) continue;
-        t_cell *c = lst->head;
-        while (c) {
-            int j = c->pointArrive - 1;
-            if (j >= 0 && j < n) {
-                M.mat[i][j] = c->proba;
-            }
-            c = c->next;
+        t_cell *curr = lst->head;
+        while (curr != NULL) {
+            int j = curr->pointArrive - 1;
+            M.mat[i][j] = curr->proba;
+            curr = curr->next;
         }
     }
     return M;
@@ -65,28 +67,35 @@ void copyMatrix(const t_matrix *src, t_matrix *dst) {
 }
 
 
-void multiplyMatrices(const t_matrix *A, const t_matrix *B, t_matrix *result) {
-    int n = A->size;
-    if (B->size != n) {
-        fprintf(stderr, "multiplyMatrices: tailles incompatibles\n");
-        exit(EXIT_FAILURE);
-    }
+void multiplyMatrices(t_matrix *A, t_matrix *B, t_matrix *result) {
+    if (B->size == A->size) {
+        int n = A->size;
+        t_matrix temp = createEmptyMatrix(n);
 
-    t_matrix temp = createEmptyMatrix(n);
-
-    for (int i = 0; i < n; ++i) {
-        for (int k = 0; k < n; ++k) {
-            float a = A->mat[i][k];
-            if (a == 0.0f) continue;
-            for (int j = 0; j < n; ++j) {
-                temp.mat[i][j] += a * B->mat[k][j];
+        for (int i = 0; i < n; ++i) {
+            for (int k = 0; k < n; ++k) {
+                float a = A->mat[i][k];
+                for (int j = 0; j < n; ++j) {
+                    temp.mat[i][j] += a * B->mat[k][j];
+                }
             }
         }
+        copyMatrix(&temp, result);
+        freeMatrix(&temp);
     }
-    copyMatrix(&temp, result);
-    freeMatrix(&temp);
+
 }
 
+
+void printMatric(t_matrix matrice) {
+    printf("\n\n# --------------------- AFFICHAGE MATRICE DE PROBA --------------------- #\n\n");
+    for (int i = 0; i < matrice.size; i++) {
+        for (int j = 0; j < matrice.size; j++) {
+            printf("%.2f ", matrice.mat[i][j]);
+        }
+        printf("\n");
+    }
+}
 
 float diffMatrix(const t_matrix *A, const t_matrix *B) {
     if (!A || !B || A->size != B->size) {
@@ -101,7 +110,7 @@ float diffMatrix(const t_matrix *A, const t_matrix *B) {
     return (float) sum;
 }
 
-t_matrix subMatrix(const t_matrix *matrix, t_tarjan_class_list partition, int compo_index) {
+t_matrix subMatrix(t_matrix *matrix, t_tarjan_class_list partition, int compo_index) {
     int idx = 1;
     t_tarjan_class_cell *cur = partition.head;
     while (cur && idx < compo_index) { cur = cur->next; idx++; }
