@@ -122,50 +122,58 @@ float diffMatrix(t_matrix *A, t_matrix *B) {
             sum += fabs((double)A->mat[i][j] - (double)B->mat[i][j]);
     return (float) sum;
 }
-/*
-t_matrix subMatrix(t_matrix *matrix, t_tarjan_class_list partition, int compo_index) {
+
+t_matrix* subMatrix(t_matrix *matrix, t_tarjan_class_list partition, int compo_index) {
     int idx = 1;
     t_tarjan_class_cell *cur = partition.head;
-    while (cur && idx < compo_index) { cur = cur->next; idx++; }
+    while (cur && idx < compo_index) {
+        cur = cur->next; idx++;
+    }
     if (!cur) {
         fprintf(stderr, "subMatrix: composante %d non trouvÃ©e\n", compo_index);
         exit(EXIT_FAILURE);
     }
     t_tarjan_class *classe = cur->classe;
 
+    //Calculer Size de la classe
     int size = 0;
     t_vertex_cell *vcur = classe->list->head;
-    while (vcur) { size++; vcur = vcur->next; }
-
-    if (size == 0) {
-        t_matrix empty = createEmptyMatrix(0);
-        return empty;
-    }
-
-    int *nodes = (int *) malloc(size * sizeof(int));
-    int p = 0;
-    vcur = classe->list->head;
     while (vcur) {
-        nodes[p++] = vcur->noeud->id;
+        size++;
         vcur = vcur->next;
     }
 
-    t_matrix sub = createEmptyMatrix(size);
-    for (int i = 0; i < size; ++i) {
-        for (int j = 0; j < size; ++j) {
-            int row = nodes[i] - 1;
-            int col = nodes[j] - 1;
-            if (row >= 0 && row < matrix->size && col >= 0 && col < matrix->size) {
-                sub.mat[i][j] = matrix->mat[row][col];
-            } else {
-                sub.mat[i][j] = 0.0f;
+    //Construction d'un tab avec tous les nodes de la classe
+    if (size != 0) {
+        int *nodes = (int *) malloc(size * sizeof(int));
+        int p = 0;
+        vcur = classe->list->head;
+        while (vcur) {
+            nodes[p++] = vcur->noeud->id;
+            vcur = vcur->next;
+        }
+        //Copie des probas entre chaque node
+        t_matrix* sub = createEmptyMatrix(size);
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                int row = nodes[i] - 1;
+                int col = nodes[j] - 1;
+                if ((row >= 0 && row < matrix->size) && (col >= 0 && col < matrix->size)) {
+                    sub->mat[i][j] = matrix->mat[row][col];
+                } else {
+                    sub->mat[i][j] = 0.0f;
+                }
             }
         }
+        free(nodes);
+        return sub;
     }
 
-    free(nodes);
-    return sub;
+
+
 }
+
+
 /*
 int gcd_int_array(const int *vals, int nbvals) {
     if (nbvals == 0) return 0;

@@ -28,7 +28,7 @@ t_matrix* multiplyMatrices(t_matrix *A, t_matrix *B);
 float diffMatrix(t_matrix *A, t_matrix *B);
 t_matrix* multiplyMatricesBy(t_matrix *matrice, int times);
 
-t_matrix subMatrix(t_matrix *matrix, t_tarjan_class_list partition, int compo_index);
+t_matrix* subMatrix(t_matrix *matrix, t_tarjan_class_list partition, int compo_index);
 int gcd_int_array(const int *vals, int nbvals);
 int getPeriod(const t_matrix sub_matrix);
 
