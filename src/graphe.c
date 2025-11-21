@@ -89,6 +89,6 @@ void drawGraphe(liste_adjacence graphe){
     }
 
     fclose(file);
-    printf("Fichier Mermaid créé avec succès\n");
+    printf("Fichier Mermaid créé avec succès et nommé 'mermaid_file.txt'\n");
 }
 
