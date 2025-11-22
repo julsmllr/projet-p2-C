@@ -77,7 +77,7 @@ void multiplyMatrices(const t_matrix *A, const t_matrix *B, t_matrix *result) {
     for (int i = 0; i < n; ++i) {
         for (int k = 0; k < n; ++k) {
             float a = A->mat[i][k];
-
+            if (a == 0.0f) continue;
             for (int j = 0; j < n; ++j) {
                 temp.mat[i][j] += a * B->mat[k][j];
             }
@@ -163,17 +163,16 @@ int gcd_int_array(const int *vals, int nbvals) {
     return result;
 }
 
-int getPeriod(const t_matrix *sub_matrix) {
-    int n = sub_matrix->size;
+int getPeriod(const t_matrix sub_matrix) {
+    int n = sub_matrix.size;
     if (n == 0) return 0;
-    int *periods = (int *) malloc(n * sizeof(int));
+    int periods = (int ) malloc(n*sizeof(int));
     int period_count = 0;
     int cpt = 1;
 
     t_matrix power_matrix = createEmptyMatrix(n);
     t_matrix result_matrix = createEmptyMatrix(n);
-
-    copyMatrix(sub_matrix, &power_matrix);
+    copyMatrix(&sub_matrix, &power_matrix);
 
     for (cpt = 1; cpt <= n; ++cpt) {
         int diag_nonzero = 0;
@@ -186,8 +185,7 @@ int getPeriod(const t_matrix *sub_matrix) {
         if (diag_nonzero) {
             periods[period_count++] = cpt;
         }
-
-        multiplyMatrices(&power_matrix, sub_matrix, &result_matrix);
+        multiplyMatrices(&power_matrix, &sub_matrix, &result_matrix);
         copyMatrix(&result_matrix, &power_matrix);
     }
 

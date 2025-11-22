@@ -80,4 +80,5 @@ void printLinks(t_list_link linkSummary);
 
 
 void caracGraphe(t_list_link linkSummary, t_tarjan_class_list classList);
+void drawClassesGraphe(t_list_link linkSummary, t_tarjan_class_list classList);
 #endif //INC_2526_TI301_PJT_TARJAN_VERTEXT_H
