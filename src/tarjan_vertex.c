@@ -304,7 +304,7 @@ void caracGraphe(t_list_link linkSummary, t_tarjan_class_list classList) {
 }
 
 void drawClassesGraphe(t_list_link linkSummary, t_tarjan_class_list classList) {
-    FILE *file = fopen("../mermaid_classes.txt", "w");
+    FILE *file = fopen("../mermaid_classes.mmd", "w");
     
     // Add Header
     fprintf(file, "---\nconfig:\nlayout: elk\ntheme: neo\nlook: neo\n---\n\nflowchart LR\n");
@@ -326,7 +326,7 @@ void drawClassesGraphe(t_list_link linkSummary, t_tarjan_class_list classList) {
     if (linkSummary.head != NULL) {
         t_cell_link* curr = linkSummary.head;
         while (curr != NULL) {
-            fprintf(file, "C%d -->|1| C%d\n", 
+            fprintf(file, "C%d --> C%d\n",
                     curr->link->classeDepart->className, 
                     curr->link->classeArrivee->className);
             curr = curr->next;
