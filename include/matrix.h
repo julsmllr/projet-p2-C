@@ -18,7 +18,6 @@ void copyMatrix(const t_matrix *src, t_matrix *dst);
 void multiplyMatrices(const t_matrix *A, const t_matrix *B, t_matrix *result);
 float diffMatrix(const t_matrix *A, const t_matrix *B);
 
-
 t_matrix subMatrix(const t_matrix *matrix, t_tarjan_class_list partition, int compo_index);
 
 int getPeriod(const t_matrix *sub_matrix);
