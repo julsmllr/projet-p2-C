@@ -1,41 +1,28 @@
-//
-// Created by zeoni on 11/17/2025.
-//
-
-
 #ifndef MATRIX_H
 #define MATRIX_H
-#include "../include/list_adjacence.h"   // pour liste_adjacence
-#include "../include/tarjan_vertex.h"    // pour t_tarjan_class_list, t_tarjan_class
 
-
+#include "../include/list_adjacence.h"
+#include "../include/tarjan_vertex.h"
 
 typedef struct {
     int size;
     float **mat;
 } t_matrix;
 
-
-t_matrix* createEmptyMatrix(int n);
+t_matrix createEmptyMatrix(int n);
 void freeMatrix(t_matrix *m);
 
-t_matrix* createMatrixFromAdjList(liste_adjacence graphe);
-void printMatric(t_matrix matrice);
-
+t_matrix createMatrixFromAdjList(liste_adjacence graphe);
 
 void copyMatrix(const t_matrix *src, t_matrix *dst);
-t_matrix* multiplyMatrices(t_matrix *A, t_matrix *B);
-float diffMatrix(t_matrix *A, t_matrix *B);
-t_matrix* multiplyMatricesBy(t_matrix *matrice, int times);
+void multiplyMatrices(const t_matrix *A, const t_matrix *B, t_matrix *result);
+float diffMatrix(const t_matrix *A, const t_matrix *B);
 
-t_matrix* subMatrix(t_matrix *matrix, t_tarjan_class_list partition, int compo_index);
+
+t_matrix subMatrix(const t_matrix *matrix, t_tarjan_class_list partition, int compo_index);
+
+int getPeriod(const t_matrix *sub_matrix);
+
 int gcd_int_array(const int *vals, int nbvals);
-int getPeriod(const t_matrix sub_matrix);
 
-#endif // MATRIX_H
-
-
-
-
-
-
+#endif
