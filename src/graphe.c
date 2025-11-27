@@ -64,7 +64,7 @@ void checkGraph(liste_adjacence graphe) {
 
 
 void drawGraphe(liste_adjacence graphe){
-    FILE *file = fopen("../mermaid_file.txt", "w");
+    FILE *file = fopen("../mermaid_file.mmd", "w");
 
     //Add Header
     fprintf(file, "---\nconfig:\nlayout: elk\ntheme: neo\nlook: neo\n---\n\nflowchart LR\n");
@@ -89,6 +89,6 @@ void drawGraphe(liste_adjacence graphe){
     }
 
     fclose(file);
-    printf("Fichier Mermaid créé avec succès\n");
+    printf("Fichier Mermaid créé avec succès et nommé 'mermaid_file.txt'\n");
 }
 
