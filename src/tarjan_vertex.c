@@ -183,8 +183,8 @@ t_tab_node_to_class* linkNodeToClass(t_tarjan_class_list partition, liste_adjace
     // Allouer un pointeur de t_tarjan_class** (qui sera t_tarjan_class***)
     t_tab_node_to_class* newTabNodeToClass = (t_tab_node_to_class*) malloc(sizeof(t_tarjan_class*));
     // Allouer le tableau de t_tarjan_class*
-    *newTabNodeToClass = (t_tarjan_class*) malloc(sizeof(t_tarjan_class*)*taille);
-    
+    *newTabNodeToClass = (t_tarjan_class**) malloc(sizeof(t_tarjan_class*)*taille);
+
     // Initialiser à NULL
     for (int i = 0; i < taille; i++) {
         (*newTabNodeToClass)[i] = NULL;
@@ -287,19 +287,65 @@ void printLinks(t_list_link linkSummary) {
 
 // --------------------- DERNIERE PARTIE --------------------- //
 
+int isClassInSummary(t_list_link linkSummary, t_tarjan_class* classe) {
+    if (linkSummary.head != NULL) {
+        t_cell_link* curr = linkSummary.head;
+        while (curr != NULL) {
+            if (curr->link->classeDepart == classe) {
+                return 1;
+            }
+            curr = curr->next;
+        }
+    }return 0;
+}
+
 void caracGraphe(t_list_link linkSummary, t_tarjan_class_list classList) {
-    int taille = 0;
+
+    printf("\n\n # -------------------------- Caractéristique du graphe -------------------------- # \n\n");
+
+    int tailleClasse, nbClasse;
+    nbClasse = 0;
     if (classList.head != NULL) {
         t_tarjan_class_cell* currentClass = classList.head;
         while (currentClass != NULL) {
+            tailleClasse = 0; //On met le nombre de noeuds dans chaque classe à 0
             t_tarjan_class* classe = currentClass->classe;
-            
+            t_vertex_cell* currCellClass = classe->list->head;
+
+            //Classe transitoire
+            if (isClassInSummary(linkSummary, classe)) {
+                printf("La classe C%d est transitoire", classe->className);
+                printf("- l'état ");
+                while (currCellClass != NULL) {
+                    tailleClasse++;
+                    printf("%d ", currCellClass->noeud->id);
+                    currCellClass = currCellClass->next;
+                }
+                printf("sont transitoires");
+            }else {
+                //Classe persistante
+                printf("La classe C%d est persistante", classe->className);
+                printf("- l'état ");
+                while (currCellClass != NULL) {
+                    tailleClasse++;
+                    printf("%d ", currCellClass->noeud->id);
+                    currCellClass = currCellClass->next;
+                }
+                printf("sont persistants");
+            }
+            //Classe Absorbante
+            if (tailleClasse == 1) {
+                printf(" - l'état %d est absorbant;\n", classe->list->head->noeud->id);
+            }else {
+                printf(";\n");
+            }
+
+            nbClasse++;
             currentClass = currentClass->next;
         }
-        //regarder si j'ai qu'une seule classe dans le graphe
-
-        //Regarder si j'ai des liens d'une classes sortantes sinon persistant
-        //Regarder si j'ai des classes avec un seul noeud
+        if (nbClasse == 1) {
+            printf("Le graphe de Markov est irréductible\n");
+        }
     }
 }
 

@@ -131,7 +131,7 @@ int main() {
 
     SetConsoleOutputCP(CP_UTF8);
     //Variables pour Graphe
-    liste_adjacence graphe = readGraph("../data/projet_proba.txt");
+    liste_adjacence graphe = readGraph("../data/exemple_valid_step3.txt");
     t_tarjan_class_list* tarjanClassList =  tarjanFunction(graphe);
     t_tab_node_to_class* tabLinkNodeToClass = linkNodeToClass(*tarjanClassList, graphe);
     t_list_link* linkSummary = linkRecence(graphe, *tabLinkNodeToClass);

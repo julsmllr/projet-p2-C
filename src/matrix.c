@@ -104,12 +104,15 @@ void printMatric(t_matrix matrice) {
     printf("\n\n# --------------------- AFFICHAGE MATRICE DE PROBA --------------------- #\n\n");
     for (int i = 0; i < matrice.size; i++) {
         for (int j = 0; j < matrice.size; j++) {
-            printf("%.2f", matrice.mat[i][j]);
+            printf("%.2f ", matrice.mat[i][j]);
             if (j != matrice.size -1) {
-                printf("&");
+                //printf("&");
+                //Pour le projet en proba
             }
         }
-        printf("\\\\ \n");
+        //printf("\\\\ \n");
+        //Pour le projet en proba
+        printf("\n");
     }
 }
 
